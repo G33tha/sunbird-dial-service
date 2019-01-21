@@ -4,6 +4,7 @@ import commons.dto.Request;
 import commons.dto.Response;
 import controllers.BaseController;
 import managers.DialcodeManager;
+import org.apache.commons.lang3.StringUtils;
 import play.libs.F.Promise;
 import play.mvc.Result;
 import telemetry.TelemetryManager;
@@ -36,7 +37,9 @@ public class DialcodeV3Controller extends BaseController {
     public Promise<Result> readDialCode(String dialCodeId) {
         String apiId = "sunbird.dialcode.read";
         try {
-            Response response = dialCodeManager.readDialCode(dialCodeId);
+            String query = request().getQueryString("fields");
+            boolean withContent = StringUtils.containsIgnoreCase(query, "contents");
+            Response response = dialCodeManager.readDialCode(dialCodeId, withContent);
             return getResponseEntity(response, apiId, null);
         } catch (Exception e) {
             TelemetryManager.error("Exception Occured while reading Dial Code details : "+ e.getMessage(), e);

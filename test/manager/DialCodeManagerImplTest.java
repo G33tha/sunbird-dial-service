@@ -138,7 +138,7 @@ public class DialCodeManagerImplTest extends CassandraTestSetup {
 	@Test
 	public void dialCodeTest_04() throws Exception {
 		String dialCodeId = null;
-		Response response = dialCodeMgr.readDialCode(dialCodeId);
+		Response response = dialCodeMgr.readDialCode(dialCodeId, false);
 		Assert.assertEquals("CLIENT_ERROR", response.getResponseCode().toString());
 	}
 

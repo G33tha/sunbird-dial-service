@@ -109,11 +109,17 @@ public class DialcodeManager extends BaseManager {
      * @see
      * org.ekstep.dialcode.mgr.IDialCodeManager#readDialCode(java.lang.String)
      */
-    public Response readDialCode(String dialCodeId) throws Exception {
+    public Response readDialCode(String dialCodeId, boolean withContent) throws Exception {
         if (StringUtils.isBlank(dialCodeId))
             return ERROR(DialCodeErrorCodes.ERR_INVALID_DIALCODE_REQUEST,
                     DialCodeErrorMessage.ERR_INVALID_DIALCODE_REQUEST, ResponseCode.CLIENT_ERROR);
         DialCode dialCode = dialCodeStore.read(dialCodeId);
+        if (null != dialCode.getMetadata()) {
+            Map<String, Object> metadata = dialCode.getMetadata();
+            if (!withContent) {
+                metadata.remove("contents");
+            }
+        }
         Response resp = getSuccessResponse();
         resp.put(DialCodeEnum.dialcode.name(), dialCode);
         return resp;
