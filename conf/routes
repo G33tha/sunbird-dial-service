@@ -11,3 +11,6 @@ POST   /v3/dialcode/publish/:id                    @controllers.dialcode.Dialcod
 POST   /v3/dialcode/publisher/create               @controllers.dialcode.DialcodeV3Controller.createPublisher()
 GET    /v3/dialcode/publisher/read/:id             @controllers.dialcode.DialcodeV3Controller.readPublisher(id: String)
 PATCH  /v3/dialcode/publisher/update/:id           @controllers.dialcode.DialcodeV3Controller.updatePublisher(id: String)
+
+POST   /v3/dialcode/period/read                   @controllers.StaffRoomController.getPeriodDetails()
+GET   /v3/dialcode/schedule/read/:date/:id        @controllers.StaffRoomController.getTimeTable(date: String, id: String)
