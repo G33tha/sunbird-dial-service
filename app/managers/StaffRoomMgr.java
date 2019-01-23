@@ -38,14 +38,11 @@ public class StaffRoomMgr {
 
     private Map<String,Object> prepareResponse(List<Map<String, Object>> resultList, String id, String date) {
         Map<String, Object> resultMap = new HashMap<>();
-        List<Map<String, Object>> resultEvents = new ArrayList<>();
         List<Map<String, Object>> attendanceDetails = new ArrayList<>();
         List<Map<String, Object>> engagementDetails = new ArrayList<>();
         List<Map<String, Object>> performanceDetails = new ArrayList<>();
         float attCount= 0.0f;
-        float engSum=0.0f;
-        float performanceSum=0.0f;
-        String period = "", subject = "";
+        String period = "";
 
         Map<String, List<Float>> egTopic = new HashMap<>();
         Map<String, List<Float>> pfTopic = new HashMap<>();
@@ -68,20 +65,21 @@ public class StaffRoomMgr {
                             put("topics" , event.get("content_topics"));
                             put("rate" , event.get("edata_value"));
                         }});
-                        if(null == egTopic.get(event.get("content_topics"))){
-                            egTopic.put((String) event.get("content_topics"), new ArrayList<>());
+                        if(null == pfTopic.get(event.get("content_topics"))){
+                            pfTopic.put((String) event.get("content_topics"), new ArrayList<>());
                         }
-                        egTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get("edata_value"))); break;
+                        pfTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get
+                                ("edata_value"))); break;
 
                         case "DC_ENGAGEMENT" : engagementDetails.add(new HashMap<String, Object>(){{
                             put("studentId" , event.get("studentId"));
                             put("topics" , event.get("content_topics"));
                             put("rate" , event.get("edata_value"));
                         }});
-                            if(null == pfTopic.get(event.get("content_topics"))){
-                                pfTopic.put((String) event.get("content_topics"), new ArrayList<>());
+                            if(null == egTopic.get(event.get("content_topics"))){
+                                egTopic.put((String) event.get("content_topics"), new ArrayList<>());
                             }
-                            pfTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get
+                            egTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get
                                     ("edata_value"))); break;
                     }
 
@@ -99,13 +97,14 @@ public class StaffRoomMgr {
 
 
         resultMap.put("topics", egTopic.keySet());
+        float finalAttCount = attCount;
         resultMap.put("engagement", new HashMap<String, Object>(){{
             put("topics", new ArrayList<Map<String, Object>>(){{
                 for(String topic: egTopic.keySet()){
                     float sum = egTopic.get(topic).stream().reduce(0f, Float::sum);
                     add(new HashMap<String, Object>(){{
                         put("id", topic);
-                        put("score", (100.0f*sum)/500.0f);
+                        put("score", (100.0f*sum)/(finalAttCount * 100.0f));
                     }});
                 }
             }});
@@ -117,7 +116,7 @@ public class StaffRoomMgr {
                     float sum = pfTopic.get(topic).stream().reduce(0f, Float::sum);
                     add(new HashMap<String, Object>(){{
                         put("id", topic);
-                        put("score", (100.0f*sum)/500.0f);
+                        put("score", (100.0f*sum)/(finalAttCount * 100.0f));
                     }});
                 }
             }});
