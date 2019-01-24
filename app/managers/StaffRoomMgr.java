@@ -225,7 +225,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-23T11:00:00+00:00");
                 put("end", "2019-01-23T12:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_1");
                 put("topics", Arrays.asList("Sun", "Planet", "Earth"));
@@ -285,7 +285,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
@@ -560,7 +560,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
@@ -581,7 +581,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
@@ -602,7 +602,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
@@ -623,7 +623,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
@@ -644,7 +644,7 @@ public class StaffRoomMgr {
             add(new HashMap<String, Object>(){{
                 put("start", "2019-01-24T13:00:00+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
-                put("grade", "Class 3");
+                put("grade", "Class 4");
                 put("subject","Geography");
                 put("period", "PTCH2_2");
                 put("topics", new ArrayList<>());
