@@ -55,31 +55,31 @@ public class StaffRoomMgr {
                     switch(eid) {
                         case "DC_ATTENDANCE" : attendanceDetails.add(new HashMap<String, Object>(){{
                             put("studentId" , event.get("studentId"));
-                            put("topics" , event.get("content_topics"));
+                            put("topics" , event.get("topics"));
                             put("present" , (100 == (Integer.parseInt((String) event.get("edata_value"))))? "Yes":
                                     "No");
                         }});attCount+=1; break;
 
                         case "DC_PERFORMANCE" : performanceDetails.add(new HashMap<String, Object>(){{
                             put("studentId" , event.get("studentId"));
-                            put("topics" , event.get("content_topics"));
+                            put("topics" , event.get("topics"));
                             put("rate" , event.get("edata_value"));
                         }});
-                        if(null == pfTopic.get(event.get("content_topics"))){
-                            pfTopic.put((String) event.get("content_topics"), new ArrayList<>());
+                        if(null == pfTopic.get(event.get("topics"))){
+                            pfTopic.put((String) event.get("topics"), new ArrayList<>());
                         }
-                        pfTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get
+                        pfTopic.get(event.get("topics")).add(Float.parseFloat((String) event.get
                                 ("edata_value"))); break;
 
                         case "DC_ENGAGEMENT" : engagementDetails.add(new HashMap<String, Object>(){{
                             put("studentId" , event.get("studentId"));
-                            put("topics" , event.get("content_topics"));
+                            put("topics" , event.get("topics"));
                             put("rate" , event.get("edata_value"));
                         }});
-                            if(null == egTopic.get(event.get("content_topics"))){
-                                egTopic.put((String) event.get("content_topics"), new ArrayList<>());
+                            if(null == egTopic.get(event.get("topics"))){
+                                egTopic.put((String) event.get("topics"), new ArrayList<>());
                             }
-                            egTopic.get(event.get("content_topics")).add(Float.parseFloat((String) event.get
+                            egTopic.get(event.get("topics")).add(Float.parseFloat((String) event.get
                                     ("edata_value"))); break;
                     }
 
