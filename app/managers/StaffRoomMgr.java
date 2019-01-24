@@ -139,7 +139,7 @@ public class StaffRoomMgr {
             put("queryType","groupBy");
             put("dataSource","telemetry");
             put("granularity","all");
-            put("dimensions", Arrays.asList("eid", "visitorName", "studentId","studentName", "period", "content_topics",
+            put("dimensions", Arrays.asList("eid", "visitorName", "studentId","studentName", "period", "topics",
                     "classroomId", "edata_value"));
             put("aggregations", new ArrayList<>());
             put("filter", new HashMap<String, Object>(){{
