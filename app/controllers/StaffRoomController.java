@@ -41,4 +41,12 @@ public class StaffRoomController extends BaseController {
         return Promise.<Result>pure(Results.ok(Json.toJson(response)).as("application/json"));
     }
 
+    public Promise<Result> getQuestions(String topic)  {
+        Map<String, Object> response = null;
+        try {
+            response = mgr.getQuestions(topic);
+        } catch (Exception e) {
+        }
+        return Promise.<Result>pure(Results.ok(Json.toJson(response)).as("application/json"));
+    }
 }

@@ -14,3 +14,4 @@ PATCH  /v3/dialcode/publisher/update/:id           @controllers.dialcode.Dialcod
 
 POST   /v3/dialcode/period/read                   @controllers.StaffRoomController.getPeriodDetails()
 GET   /v3/dialcode/schedule/read/:date/:id        @controllers.StaffRoomController.getTimeTable(date: String, id: String)
+GET   /v3/dialcode/question/read/:topic           @controllers.StaffRoomController.getQuestions(topic: String)

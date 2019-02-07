@@ -3,6 +3,7 @@ package managers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -895,7 +896,7 @@ public class StaffRoomMgr {
 
         timeTable.put("2019-01-24_STU20", new ArrayList() {{
             add(new HashMap<String, Object>(){{
-                put("start", "2019-01-24T13:00:00+00:00");
+                put("start", "2019-01-24T13:00:0>0+00:00");
                 put("end", "2019-01-24T18:00:00+00:00");
                 put("grade", "Class 8");
                 put("subject","Science");
@@ -908,4 +909,13 @@ public class StaffRoomMgr {
     }
 
 
+    public Map<String,Object> getQuestions(String topic) throws Exception {
+        String url = "https://dev.ekstep.in/api/composite/v3/search";
+        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\",\"identifier\":[\"do_1126831809974108161694\",\"do_1126831607364239361502\",\"do_1126831672473600001666\",\"do_1126831762018385921687\"],\"status\":[\"Live\"]}}}";
+
+        HttpResponse<String> httpResponse = Unirest.post(url).header("Content-Type", "application/json").body(request)
+                .asString();
+        Map<String, Object> resp = mapper.readValue(httpResponse.getBody(), Map.class);
+        return resp;
+    }
 }
