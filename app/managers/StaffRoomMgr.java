@@ -21,19 +21,21 @@ public class StaffRoomMgr {
         loadTimeTable();
     }
 
-    public Map<String,Object> getPeriodDetails(String visitorID, String periodId, String classId,
-                                               String date, String id) throws Exception {
-        String studentId = "";
+    public Map<String,Object> getPeriodDetails(String topic,
+                                               String date) throws Exception {
+        /*String studentId = "";
         if(id.startsWith("STU"))
-            studentId = id;
-        Map<String,Object> request = prepareRequest(visitorID, periodId, studentId, classId, date);
+            studentId = id;*/
+       // Map<String,Object> request = prepareRequest(visitorID, periodId, studentId, classId, date);
+
+        Map<String, Object> request = prepareReq(topic, date);
 
         HttpResponse<String> httpResponse = Unirest.post("http://52.172.188.118:8082/druid/v2").header
                 ("Content-Type", "application/json").body(mapper
                 .writeValueAsString(request))
                 .asString();
         List<Map<String, Object>> resultList = mapper.readValue(httpResponse.getBody(), List.class);
-        Map<String, Object> response = prepareResponse(resultList, id, date);
+        Map<String, Object> response = prepareResponse(resultList, null, date);
         return response;
     }
 
@@ -88,18 +90,18 @@ public class StaffRoomMgr {
                 }
         }
 
-        List<Map<String, Object>> tt = (List<Map<String, Object>>) timeTable.get(date+ "_" + id);
+        /*List<Map<String, Object>> tt = (List<Map<String, Object>>) timeTable.get(date+ "_" + id);
 
         for(Map<String, Object> p: tt){
             if(StringUtils.equalsIgnoreCase(period, (String) p.get("period"))){
                 resultMap.putAll(p);
             }
-        }
+        }*/
 
 
         resultMap.put("topics", egTopic.keySet());
         float finalAttCount = attCount;
-        resultMap.put("engagement", new HashMap<String, Object>(){{
+        /*resultMap.put("engagement", new HashMap<String, Object>(){{
             put("topics", new ArrayList<Map<String, Object>>(){{
                 for(String topic: egTopic.keySet()){
                     float sum = egTopic.get(topic).stream().reduce(0f, Float::sum);
@@ -109,7 +111,7 @@ public class StaffRoomMgr {
                     }});
                 }
             }});
-        }});
+        }});*/
 
         resultMap.put("performance", new HashMap<String, Object>(){{
             put("topics", new ArrayList<Map<String, Object>>(){{
@@ -123,12 +125,12 @@ public class StaffRoomMgr {
             }});
         }});
 
-        if(id.startsWith("STU"))
-            resultMap.put("attendance", ((attCount*100.0)/1.0));
-        else
-            resultMap.put("attendance", ((attCount*100.0)/5.0));
-        resultMap.put("attendanceDetails", attendanceDetails);
-        resultMap.put("engagementDetails", engagementDetails);
+        //if(id.startsWith("STU"))
+           // resultMap.put("attendance", ((attCount*100.0)/1.0));
+        //else
+            //resultMap.put("attendance", ((attCount*100.0)/5.0));
+        //resultMap.put("attendanceDetails", attendanceDetails);
+        //resultMap.put("engagementDetails", engagementDetails);
         resultMap.put("performanceDetails", performanceDetails);
         return  resultMap;
 
@@ -188,6 +190,39 @@ public class StaffRoomMgr {
                                 put("type", "selector");
                                 put("dimension", "eid");
                                 put("value", "DC_ATTENDANCE");
+                            }});
+                        }});
+                    }});
+                }});
+            }});
+            put("intervals", date + "T00:00:00.000/" + date +"T23:59:59.000");
+        }};
+    }
+
+
+    private Map<String,Object> prepareReq(String topic,String date) {
+        return new HashMap<String, Object>() {{
+            put("queryType","groupBy");
+            put("dataSource","telemetry");
+            put("granularity","all");
+            put("dimensions", Arrays.asList("eid", "visitorName", "studentId","studentName", "period", "topics",
+                    "classroomId", "edata_value"));
+            put("aggregations", new ArrayList<>());
+            put("filter", new HashMap<String, Object>(){{
+                put("type", "and");
+                put("fields", new ArrayList<Map<String, Object>>(){{
+                    add(new HashMap<String, Object>(){{
+                        put("type", "selector");
+                        put("dimension", "topics");
+                        put("value", topic);
+                    }});
+                    add(new HashMap<String, Object>(){{
+                        put("type", "or");
+                        put("fields", new ArrayList<Map<String, Object>>(){{
+                            add(new HashMap<String, Object>(){{
+                                put("type", "selector");
+                                put("dimension", "eid");
+                                put("value", "DC_PERFORMANCE");
                             }});
                         }});
                     }});

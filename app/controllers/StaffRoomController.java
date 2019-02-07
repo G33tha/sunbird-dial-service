@@ -18,13 +18,15 @@ public class StaffRoomController extends BaseController {
         Request request = getRequest();
         Map<String, Object> response = null;
 
-        String visitorID = (String) request.get("visitor");
+        /*String visitorID = (String) request.get("visitor");
         String periodId = (String) request.get("periodId");
         String classId = (String) request.get("classId");
         String date = (String) request.get("date");
-        String id = (String) request.get("id");
+        String id = (String) request.get("id");*/
+        String date = (String) request.get("date");
+        String topic = (String) request.get("topic");
         try {
-            response = mgr.getPeriodDetails(visitorID, periodId, classId, date, id);
+            response = mgr.getPeriodDetails(topic, date);
         } catch (Exception e) {
             e.printStackTrace();
         }
