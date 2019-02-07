@@ -21,25 +21,24 @@ public class StaffRoomMgr {
         loadTimeTable();
     }
 
-    public Map<String,Object> getPeriodDetails(String topic,
-                                               String date) throws Exception {
+    public Map<String,Object> getPeriodDetails(String topic) throws Exception {
         /*String studentId = "";
         if(id.startsWith("STU"))
             studentId = id;*/
        // Map<String,Object> request = prepareRequest(visitorID, periodId, studentId, classId, date);
 
-        Map<String, Object> request = prepareReq(topic, date);
+        Map<String, Object> request = prepareReq(topic);
 
         HttpResponse<String> httpResponse = Unirest.post("http://52.172.188.118:8082/druid/v2").header
                 ("Content-Type", "application/json").body(mapper
                 .writeValueAsString(request))
                 .asString();
         List<Map<String, Object>> resultList = mapper.readValue(httpResponse.getBody(), List.class);
-        Map<String, Object> response = prepareResponse(resultList, null, date);
+        Map<String, Object> response = prepareResponse(resultList);
         return response;
     }
 
-    private Map<String,Object> prepareResponse(List<Map<String, Object>> resultList, String id, String date) {
+    private Map<String,Object> prepareResponse(List<Map<String, Object>> resultList) {
         Map<String, Object> resultMap = new HashMap<>();
         List<Map<String, Object>> attendanceDetails = new ArrayList<>();
         List<Map<String, Object>> engagementDetails = new ArrayList<>();
@@ -200,7 +199,7 @@ public class StaffRoomMgr {
     }
 
 
-    private Map<String,Object> prepareReq(String topic,String date) {
+    private Map<String,Object> prepareReq(String topic) {
         return new HashMap<String, Object>() {{
             put("queryType","groupBy");
             put("dataSource","telemetry");
@@ -228,7 +227,7 @@ public class StaffRoomMgr {
                     }});
                 }});
             }});
-            put("intervals", date + "T00:00:00.000/" + date +"T23:59:59.000");
+            put("intervals", "2018-01-24T00:00:00.000/2020-01-24T23:59:59.000");
         }};
     }
 

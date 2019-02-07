@@ -23,10 +23,9 @@ public class StaffRoomController extends BaseController {
         String classId = (String) request.get("classId");
         String date = (String) request.get("date");
         String id = (String) request.get("id");*/
-        String date = (String) request.get("date");
         String topic = (String) request.get("topic");
         try {
-            response = mgr.getPeriodDetails(topic, date);
+            response = mgr.getPeriodDetails(topic);
         } catch (Exception e) {
             e.printStackTrace();
         }
