@@ -6,11 +6,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StaffRoomMgr {
 
@@ -27,14 +29,34 @@ public class StaffRoomMgr {
             studentId = id;*/
        // Map<String,Object> request = prepareRequest(visitorID, periodId, studentId, classId, date);
 
+        //Map<String, Object> request = prepareReq(topic);
+
         Map<String, Object> request = prepareReq(topic);
+
+        System.out.println(mapper.writeValueAsString(request));
 
         HttpResponse<String> httpResponse = Unirest.post("http://52.172.188.118:8082/druid/v2").header
                 ("Content-Type", "application/json").body(mapper
                 .writeValueAsString(request))
                 .asString();
-        List<Map<String, Object>> resultList = mapper.readValue(httpResponse.getBody(), List.class);
-        Map<String, Object> response = prepareResponse(resultList);
+
+        List<Map<String, Object>> resultList = (List<Map<String, Object>>) mapper.readValue(httpResponse.getBody(), List
+                .class);
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, Object>> perfDetails = new ArrayList<>();
+
+        for(Map<String, Object> result : resultList) {
+            Map<String, Object> event = (Map<String, Object>) result.get("event");
+            perfDetails.add(new HashMap<String, Object>(){{
+                put("studentId", event.get("studentName"));
+                put("rate", event.get("average_performance"));
+            }});
+        }
+
+        response.put("performanceDetails", perfDetails);
+
+
+        System.out.println("Response :::::" + response);
         return response;
     }
 
@@ -199,36 +221,17 @@ public class StaffRoomMgr {
     }
 
 
-    private Map<String,Object> prepareReq(String topic) {
-        return new HashMap<String, Object>() {{
-            put("queryType","groupBy");
-            put("dataSource","telemetry");
-            put("granularity","all");
-            put("dimensions", Arrays.asList("eid", "visitorName", "studentId","studentName", "period", "topics",
-                    "classroomId", "edata_value"));
-            put("aggregations", new ArrayList<>());
-            put("filter", new HashMap<String, Object>(){{
-                put("type", "and");
-                put("fields", new ArrayList<Map<String, Object>>(){{
-                    add(new HashMap<String, Object>(){{
-                        put("type", "selector");
-                        put("dimension", "topics");
-                        put("value", topic);
-                    }});
-                    add(new HashMap<String, Object>(){{
-                        put("type", "or");
-                        put("fields", new ArrayList<Map<String, Object>>(){{
-                            add(new HashMap<String, Object>(){{
-                                put("type", "selector");
-                                put("dimension", "eid");
-                                put("value", "DC_PERFORMANCE");
-                            }});
-                        }});
-                    }});
-                }});
-            }});
-            put("intervals", "2018-01-24T00:00:00.000/2020-01-24T23:59:59.000");
-        }};
+    private Map<String, Object> prepareReq(String topic) throws IOException {
+        String requestStr = "{\"queryType\":\"groupBy\",\"dataSource\":\"telemetry\"," +
+                "\"dimensions\":[\"studentName\"]," +
+                "\"metrics\":[],\"limitSpec\":{\"type\":\"default\",\"limit\":200,\"columns\":[\"studentName\"," +
+                "\"average_performance\"]},\"filter\":{\"type\":\"and\",\"fields\":[{\"type\":\"selector\"," +
+                "\"dimension\":\"eid\",\"value\":\"DC_PERFORMANCE\"},{\"type\":\"selector\",\"dimension\":\"topics\"," +
+                "\"value\":\"" + topic + "\"}]},\"aggregations\":[{\"type\":\"count\",\"name\":\"rowCount\"}," +
+                "{\"type\":\"doubleSum\",\"name\":\"total_edata_value\",\"fieldName\":\"edata_value\"}],\"postAggregations\":[{\"type\":\"arithmetic\",\"name\":\"average_performance\",\"fn\":\"/\",\"fields\":[{\"type\":\"fieldAccess\",\"name\":\"total_edata_value\",\"fieldName\":\"total_edata_value\"},{\"type\":\"fieldAccess\",\"name\":\"rowCount\",\"fieldName\":\"rowCount\"}]}],\"granularity\":\"all\",\"intervals\":[\"2018-01-24T00:00:00.000/2020-01-24T23:59:59.000\"],\"pagingSpec\":{\"pagingIdentifiers\":{},\"threshold\":100}}";
+
+        Map<String, Object> request = mapper.readValue(requestStr, Map.class);
+        return request;
     }
 
 
@@ -944,8 +947,8 @@ public class StaffRoomMgr {
 
 
     public Map<String,Object> getQuestions(String topic) throws Exception {
-        String url = "https://dev.ekstep.in/api/composite/v3/search";
-        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\",\"identifier\":[\"do_1126831809974108161694\",\"do_1126830057639772161111\",\"do_1126831672473600001666\",\"do_1126831762018385921687\"],\"status\":[\"Live\"]}}}";
+        String url = "https://dev.sunbirded.org/action/composite/v3/search";
+        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\",\"identifier\":[\"do_112694410769801216167\",\"do_112694406199902208165\",\"do_112694412415705088170\",\"do_112694423412555776189\"],\"status\":[]}}}";
 
         HttpResponse<String> httpResponse = Unirest.post(url).header("Content-Type", "application/json").body(request)
                 .asString();
