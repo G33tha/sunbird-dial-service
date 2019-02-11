@@ -948,7 +948,10 @@ public class StaffRoomMgr {
 
     public Map<String,Object> getQuestions(String topic) throws Exception {
         String url = "https://dev.sunbirded.org/action/composite/v3/search";
-        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\",\"identifier\":[\"do_112694410769801216167\",\"do_112694406199902208165\",\"do_112694412415705088170\",\"do_112694423412555776189\"],\"status\":[]}}}";
+        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
+                "\"identifier\":[\"do_112694410769801216167\",\"do_112694406199902208165\"," +
+                "\"do_112694412415705088170\",\"do_112694423412555776189\",\"do_1126964494652702721105\"]," +
+                "\"status\":[]}}}";
 
         HttpResponse<String> httpResponse = Unirest.post(url).header("Content-Type", "application/json").body(request)
                 .asString();
