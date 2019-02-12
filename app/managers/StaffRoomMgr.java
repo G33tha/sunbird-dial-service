@@ -951,10 +951,10 @@ public class StaffRoomMgr {
         String request = "";
         if(StringUtils.equalsIgnoreCase(topic, "Parent")) {
             request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
-                    "\"identifier\":[\"do_1126971789607403521282\",\"do_1126971789607485441283\",\"do_1126971789607485441284\",\"do_1126971789607403521281\",\"do_1126971789607321601280\"],\"status\":[\"Live\"]}}}";
+                    "\"identifier\":[\"do_1126966927728558081171\",\"do_1126966627435315201152\",\"do_1126966770400706561163\",\"do_1126966701863895041161\",\"do_1126966595571712001147\"],\"status\":[\"Live\"]}}}";
         }else {
             request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
-                    "\"identifier\":[\"do_1126971757361889281248\",\"do_1126971750120243201246\",\"do_1126971750120161281243\",\"do_1126971750120243201245\",\"do_1126971750120325121247\"],\"status\":[\"Live\"]}}}";
+                    "\"identifier\":[\"do_1126971638065070081240\",\"do_1126966719281889281162\",\"do_1126966694339297281160\",\"do_1126966648501616641156\",\"do_1126966684771123201159\"],\"status\":[\"Live\"]}}}";
         }
 
         HttpResponse<String> httpResponse = Unirest.post(url).header("Content-Type", "application/json").body(request)
