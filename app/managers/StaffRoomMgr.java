@@ -948,10 +948,14 @@ public class StaffRoomMgr {
 
     public Map<String,Object> getQuestions(String topic) throws Exception {
         String url = "https://dev.sunbirded.org/action/composite/v3/search";
-        String request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
-                "\"identifier\":[\"do_112694410769801216167\",\"do_112694406199902208165\"," +
-                "\"do_112694412415705088170\",\"do_112694423412555776189\",\"do_1126964494652702721105\"]," +
-                "\"status\":[]}}}";
+        String request = "";
+        if(StringUtils.equalsIgnoreCase(topic, "Parent")) {
+            request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
+                    "\"identifier\":[\"do_1126971789607403521282\",\"do_1126971789607485441283\",\"do_1126971789607485441284\",\"do_1126971789607403521281\",\"do_1126971789607321601280\"],\"status\":[\"Live\"]}}}";
+        }else {
+            request = "{\"request\":{\"filters\":{\"objectType\":\"Content\"," +
+                    "\"identifier\":[\"do_1126971757361889281248\",\"do_1126971750120243201246\",\"do_1126971750120161281243\",\"do_1126971750120243201245\",\"do_1126971750120325121247\"],\"status\":[\"Live\"]}}}";
+        }
 
         HttpResponse<String> httpResponse = Unirest.post(url).header("Content-Type", "application/json").body(request)
                 .asString();
