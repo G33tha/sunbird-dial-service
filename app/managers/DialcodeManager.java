@@ -199,7 +199,7 @@ public class DialcodeManager extends BaseManager {
         int offset = defaultOffset;
         try {
             if (map.containsKey("offset"))
-                offset = (int) map.get("offset");
+                offset = ((Number) map.get("offset")).intValue();
         } catch (Exception e) {
             throw new ClientException(errCode, "Please provide valid offset.");
         }
@@ -210,7 +210,7 @@ public class DialcodeManager extends BaseManager {
         int limit = defaultLimit;
         try {
             if (map.containsKey("limit"))
-                limit = (int) map.get("limit");
+                limit = ((Number) map.get("limit")).intValue();
         } catch (Exception e) {
             throw new ClientException(errCode, "Please provide valid limit.");
         }

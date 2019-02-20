@@ -71,6 +71,7 @@ public class DialCodeGenerator {
 					codes.put(lastIndex, code);
 				} catch (Exception e) {
 					//TelemetryManager.error("Error while generating DIAL code", e);
+					throw e;
 				}
 			}
 		}
