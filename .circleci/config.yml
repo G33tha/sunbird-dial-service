@@ -10,9 +10,6 @@ jobs:
       - run:
           name: Check elastic-search status
           command: sleep 10 && wget --waitretry=5 --retry-connrefused -v http://127.0.0.1:9200
-
-      - restore_cache:
-          key: dail-service-dependency-cache-{{ checksum "pom.xml" }}
       
       - run:
           name: Create required directories
@@ -21,6 +18,14 @@ jobs:
                     && find ./ -type f -name "logback.xml" -print0 | xargs -0 sed -i -e 's/\/data\/logs/logs/g' 
                     && find ./ -type f -name "application.conf" -print0 | xargs -0 sed -i -e 's/\/data\//~\//g' 
                     && find ./ -type f -name "*.java" -print0 | xargs -0 sed -i -e 's/\/data\//~\//g'
+      
+      - restore_cache:
+          key: dail-service-dependency-cache-{{ checksum "pom.xml" }}
+
+      - run: 
+          name: Execute build
+          command: mvn clean install
+
       - run:
           name: Download codacy coverage jar file.
           command: wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
