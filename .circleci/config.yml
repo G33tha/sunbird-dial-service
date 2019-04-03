@@ -1,14 +1,27 @@
 version: 2.1
 jobs:
   dail-service-build:
-    machine: true
+    docker:
+      - image: circleci/openjdk:8u171-jdk
+      - image: circleci/redis:latest
+      - image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
     steps:
+      - run:
+          name: Check elastic-search status
+          command: sleep 10 && wget --waitretry=5 --retry-connrefused -v http://127.0.0.1:9200
+      
       - checkout
+
       - restore_cache:
           key: dail-service-dependency-cache-{{ checksum "pom.xml" }}
-      - run: 
-          name: Setup VM and Build
-          command: bash vmsetup.sh
+      
+      - run:
+          name: Create required directories
+          command: mkdir -p ~/logs/dialcode/
+                    && find ./ -type f -name "log4j2.xml" -print0 | xargs -0 sed -i -e 's/\/data\/logs/~\/logs/g' 
+                    && find ./ -type f -name "logback.xml" -print0 | xargs -0 sed -i -e 's/\/data\/logs/logs/g' 
+                    && find ./ -type f -name "application.conf" -print0 | xargs -0 sed -i -e 's/\/data\//~\//g' 
+                    && find ./ -type f -name "*.java" -print0 | xargs -0 sed -i -e 's/\/data\//~\//g'
       - run:
           name: Download codacy coverage jar file.
           command: wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[0].browser_download_url')
