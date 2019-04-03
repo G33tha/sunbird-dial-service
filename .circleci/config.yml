@@ -6,11 +6,10 @@ jobs:
       - image: circleci/redis:latest
       - image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
     steps:
+      - checkout
       - run:
           name: Check elastic-search status
           command: sleep 10 && wget --waitretry=5 --retry-connrefused -v http://127.0.0.1:9200
-      
-      - checkout
 
       - restore_cache:
           key: dail-service-dependency-cache-{{ checksum "pom.xml" }}
