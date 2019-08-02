@@ -17,3 +17,9 @@ dial_home: /home/{{learner_user}}/platform/dial/sunbird-dial-service
 process_home: ""
 app_home: "{{ dial_home }}"
 process_args: -- -cp '{{ app_home }}/lib/*' {{ service_args }} play.core.server.ProdServerStart {{ app_home }}
+cassandra_lp_connection: "{{ groups['dp-cassandra'][0] }}:9042"
+cassandra_lpa_connection: "{{ groups['dp-cassandra'][0] }}:9042"
+dialcode_keyspace_name: "dev_dialcode_store"
+dial_es_index_host: "{{ groups['composite-search-cluster'][0] }}:9200"
+redis_host: "{{ groups['redis1][0] }}"
+redis_port: "6379"
