@@ -11,6 +11,8 @@
   command: "{{ dial_service_path }}/sunbird-dial-service status"
   register: dial_status
 
+- debug:
+    msg: "dial_status: {{ dial_status }}"
 
 - name: Stop the dial api service
   become: yes
