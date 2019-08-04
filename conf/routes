@@ -16,3 +16,6 @@ PATCH  /v3/dialcode/publisher/update/:id           @controllers.dialcode.Dialcod
 POST   /v3/dialcode/period/read                   @controllers.StaffRoomController.getPeriodDetails()
 GET   /v3/dialcode/schedule/read/:date/:id        @controllers.StaffRoomController.getTimeTable(date: String, id: String)
 GET   /v3/dialcode/question/read/:topic           @controllers.StaffRoomController.getQuestions(topic: String)
+POST  /ptm/v3/create                              @controllers.DigitalPTMController.create()
+PATCH /ptm/v3/update/:id                           @controllers.DigitalPTMController.update(id: String)
+GET   /ptm/v3/read/:id/:visitor                    @controllers.DigitalPTMController.read(id: String, visitor: String)
